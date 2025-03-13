@@ -117,14 +117,14 @@ XGBoost（eXtreme Gradient Boosting）是一个高效且灵活的梯度提升框
 - **缺失值处理**：XGBoost能够自动处理缺失值，通过学习缺失值应该被分到左子树还是右子树来最大化增益。对于每个分裂点，XGBoost会尝试将缺失值分到左子树和右子树，然后选择增益最大的方向。
 
 ### SVM
-支持向量机（SVM）是一种用于分类和回归的监督学习模型，特别适用于高维数据。以下是SVM的一些关键特性：
+支持向量机（Support Vector Machine, SVM）是一种用于分类和回归的监督学习模型，特别适用于高维数据。以下是SVM的一些关键特性：
 
 - **基本原理**：SVM的目标是找到一个最佳的超平面，将不同类别的样本分开。对于线性可分的数据，SVM通过最大化边界（即支持向量到超平面的距离）来找到这个超平面。
 
 - **线性SVM**：对于线性可分的数据，SVM通过以下优化问题来找到超平面：
   $$\min_{w,b} \frac{1}{2} \|w\|^2$$
   $$\text{subject to } y_i(w^T x_i + b) \geq 1, \forall i$$
-  其中，\(w\) 是超平面的法向量，\(b\) 是偏置项。
+  其中，$w$是超平面的法向量，$b$是偏置项。
 
 - **软间隔SVM**：对于线性不可分的数据，SVM引入松弛变量 \(\xi_i\) 来允许一些误分类：
   $$\min_{w,b,\xi} \frac{1}{2} \|w\|^2 + C \sum \xi_i$$
@@ -132,14 +132,14 @@ XGBoost（eXtreme Gradient Boosting）是一个高效且灵活的梯度提升框
   其中，\(C\) 是惩罚系数，控制误分类的惩罚程度。
 
 - **核方法**：SVM通过核函数将数据映射到高维空间，以处理非线性可分的数据。常用的核函数包括：
-  - **线性核**：\(K(x_i, x_j) = x_i^T x_j\)
-  - **多项式核**：\(K(x_i, x_j) = (\gamma x_i^T x_j + r)^d\)
-  - **RBF核（径向基核）**：\(K(x_i, x_j) = \exp(-\gamma \|x_i - x_j\|^2)\)
-  - **Sigmoid核**：\(K(x_i, x_j) = \tanh(\gamma x_i^T x_j + r)\)
+  - **线性核**：$K(x_i, x_j) = x_i^T x_j$
+  - **多项式核**：$K(x_i, x_j) = (\gamma x_i^T x_j + r)^d$
+  - **RBF核（径向基核）**：$K(x_i, x_j) = \exp(-\gamma \|x_i - x_j\|^2)$
+  - **Sigmoid核**：$K(x_i, x_j) = \tanh(\gamma x_i^T x_j + r)$
 
 - **对偶问题**：通过拉格朗日乘数法，SVM的优化问题可以转化为对偶问题：
   $$\max_{\alpha} \sum \alpha_i - \frac{1}{2} \sum \sum \alpha_i \alpha_j y_i y_j K(x_i, x_j)$$
   $$\text{subject to } \sum \alpha_i y_i = 0, 0 \leq \alpha_i \leq C, \forall i$$
-  其中，\(\alpha_i\) 是拉格朗日乘子。
+  其中，$\alpha_i$是拉格朗日乘子。
 
-- **支持向量**：在对偶问题的解中，\(\alpha_i > 0\) 的样本称为支持向量，这些样本对超平面的确定起关键作用。
+- **支持向量**：在对偶问题的解中，$\alpha_i > 0$的样本称为支持向量，这些样本对超平面的确定起关键作用。
