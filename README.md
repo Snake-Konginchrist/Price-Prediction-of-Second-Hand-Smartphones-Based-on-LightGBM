@@ -64,8 +64,6 @@ python predict.py
 | SVM       | 178.9  | 234.1  | 15.6% |
 | XGBoost     | 165.8  | 208.4  | 13.1% |
 
-## 许可证
-[MIT License](LICENSE)
 
 ## 算法原理
 
@@ -143,3 +141,10 @@ XGBoost（eXtreme Gradient Boosting）是一个高效且灵活的梯度提升框
   其中，$\alpha_i$是拉格朗日乘子。
 
 - **支持向量**：在对偶问题的解中，$\alpha_i > 0$的样本称为支持向量，这些样本对超平面的确定起关键作用。
+
+## 许可证
+[MIT License](LICENSE)
+
+## Star History
+
+[![Star History Chart](https://api.star-history.com/svg?repos=Snake-Konginchrist/Price-Prediction-of-Second-Hand-Smartphones-Based-on-LightGBM&type=Date)](https://www.star-history.com/#Snake-Konginchrist/Price-Prediction-of-Second-Hand-Smartphones-Based-on-LightGBM&Date)
