@@ -88,41 +88,41 @@ LightGBM（Light Gradient Boosting Machine）是一种基于决策树的梯度�
 
 - **梯度提升框架**：LightGBM基于梯度提升决策树（GBDT）算法，其目标函数可以表示为：
   
-  ```math
-  L(Θ) = Σ(i=1 to n) l(y_i, ŷ_i) + Σ(k=1 to K) Ω(f_k)
-  ```
+  $$
+  \mathcal{L}(\Theta) = \sum_{i=1}^n l(y_i, \hat{y}_i) + \sum_{k=1}^K \Omega(f_k)
+  $$
   
-  其中，`l(y_i, ŷ_i)` 是损失函数，`Ω(f_k)` 是第 k 棵树的复杂度惩罚项，`ŷ_i = Σ(k=1 to K) f_k(x_i)` 是模型预测值。
+  其中，$l(y_i, \hat{y}_i)$ 是损失函数，$\Omega(f_k)$ 是第 $k$ 棵树的复杂度惩罚项，$\hat{y}_i = \sum_{k=1}^K f_k(x_i)$ 是模型预测值。
 
 - **直方图算法**：LightGBM使用直方图算法来加速决策树的构建。它通过将连续特征值离散化为有限个bin来减少计算量。每个特征的值被分配到一个bin中，然后在这些bin上进行分裂点的选择。这样可以显著减少计算量和内存使用。具体来说，直方图算法通过将特征值分桶，计算每个bin的梯度和Hessian和，从而快速找到最佳分裂点。分裂增益计算公式为：
   
-  ```math
-  Gain = (1/2) * [(G_L²)/(H_L + λ) + (G_R²)/(H_R + λ) - (G_L + G_R)²/(H_L + H_R + λ)] - γ
-  ```
+  $$
+  \text{Gain} = \frac{1}{2} \left[ \frac{G_L^2}{H_L + \lambda} + \frac{G_R^2}{H_R + \lambda} - \frac{(G_L + G_R)^2}{H_L + H_R + \lambda} \right] - \gamma
+  $$
   
-  其中，`G_L` 和 `G_R` 分别是左右子节点的梯度和，`H_L` 和 `H_R` 分别是左右子节点的Hessian和，`λ` 是L2正则化项，`γ` 是复杂度惩罚项。
+  其中，$G_L$ 和 $G_R$ 分别是左右子节点的梯度和，$H_L$ 和 $H_R$ 分别是左右子节点的Hessian和，$\lambda$ 是L2正则化项，$\gamma$ 是复杂度惩罚项。
 
 - **Leaf-wise生长策略**：与其他基于深度的生长策略不同，LightGBM采用leaf-wise的生长策略。它选择具有最大增益的叶子节点进行分裂，而不是层次生长。这种方法可以更好地减少误差，但也可能导致过拟合，因此需要通过设置`num_leaves`和`max_depth`等参数来控制树的复杂度。Leaf-wise生长策略的优点是可以更好地拟合数据，特别是在数据集较大时表现出色。叶子节点的分裂选择基于以下公式：
   
-  ```math
-  leaf* = argmax(leaf) Gain(leaf)
-  ```
+  $$
+  \text{leaf}^* = \arg\max_{\text{leaf}} \text{Gain}(\text{leaf})
+  $$
 
 - **GOSS算法**：Gradient-based One-Side Sampling (GOSS) 是LightGBM的一种采样方法。GOSS通过保留大梯度的样本和随机采样小梯度的样本来加速训练过程。通过这种方法，LightGBM可以在不显著降低精度的情况下减少计算量。GOSS的数学表达为：
   
-  ```math
-  ∇̃ = Σ(i∈A) ∇_i + ((1-a)/b) * Σ(i∈B) ∇_i
-  ```
+  $$
+  \tilde{\nabla} = \sum_{i \in A} \nabla_i + \frac{1-a}{b} \sum_{i \in B} \nabla_i
+  $$
   
-  其中，`A` 是大梯度样本集合，`B` 是随机采样的小梯度样本集合，`a` 是保留大梯度样本的比例，`b` 是随机采样小梯度样本的比例。
+  其中，$A$ 是大梯度样本集合，$B$ 是随机采样的小梯度样本集合，$a$ 是保留大梯度样本的比例，$b$ 是随机采样小梯度样本的比例。
 
 - **EFB技术**：Exclusive Feature Bundling (EFB) 是一种特征捆绑技术，用于减少特征的维度，特别适用于稀疏特征。EFB通过将互斥的特征捆绑在一起，减少了特征的数量，从而提高了计算效率。两个特征的冲突度量可以表示为：
   
-  ```math
-  conflict(i, j) = |{k | x_ki ≠ 0 and x_kj ≠ 0}| / |{k | x_ki ≠ 0 or x_kj ≠ 0}|
-  ```
+  $$
+  \text{conflict}(i, j) = \frac{|\{k | x_{ki} \neq 0 \text{ and } x_{kj} \neq 0\}|}{|\{k | x_{ki} \neq 0 \text{ or } x_{kj} \neq 0\}|}
+  $$
   
-  其中，`x_ki` 表示第 k 个样本的第 i 个特征值。
+  其中，$x_{ki}$ 表示第 $k$ 个样本的第 $i$ 个特征值。
 
 ### XGBoost
 
@@ -130,43 +130,43 @@ XGBoost（eXtreme Gradient Boosting）是一个高效且灵活的梯度提升框
 
 - **Boosting算法**：XGBoost使用梯度提升算法，通过逐步构建一系列弱学习器（通常是决策树）来提高模型的预测性能。每个新树的构建是为了纠正之前所有树的错误。XGBoost通过加权的方式来组合多个弱学习器的预测结果，从而提高整体模型的准确性。模型的预测值可以表示为：
   
-  ```math
-  ŷ_i = Σ(k=1 to K) f_k(x_i)
-  ```
+  $$
+  \hat{y}_i = \sum_{k=1}^K f_k(x_i)
+  $$
   
-  其中，`f_k` 是第 k 棵树，`K` 是树的总数。
+  其中，$f_k$ 是第 $k$ 棵树，$K$ 是树的总数。
 
 - **目标函数**：XGBoost的目标函数包含损失函数和正则化项：
   
-  ```math
-  L(φ) = Σ(i=1 to n) l(y_i, ŷ_i^(t-1) + f_t(x_i)) + Ω(f_t)
-  ```
+  $$
+  \mathcal{L}(\phi) = \sum_{i=1}^n l(y_i, \hat{y}_i^{(t-1)} + f_t(x_i)) + \Omega(f_t)
+  $$
   
-  其中，`l` 是损失函数，`ŷ_i^(t-1)` 是前 t-1 棵树的预测值，`f_t` 是第 t 棵树，`Ω` 是正则化项。
+  其中，$l$ 是损失函数，$\hat{y}_i^{(t-1)}$ 是前 $t-1$ 棵树的预测值，$f_t$ 是第 $t$ 棵树，$\Omega$ 是正则化项。
 
 - **正则化**：XGBoost在目标函数中引入了L1和L2正则化项，以防止过拟合。正则化项通过惩罚复杂模型来提高模型的泛化能力。L1正则化可以产生稀疏模型，而L2正则化则有助于防止过拟合。正则化项的表达式为：
   
-  ```math
-  Ω(f) = γT + (1/2)λΣ(j=1 to T) w_j² + αΣ(j=1 to T) |w_j|
-  ```
+  $$
+  \Omega(f) = \gamma T + \frac{1}{2} \lambda \sum_{j=1}^T w_j^2 + \alpha \sum_{j=1}^T |w_j|
+  $$
   
-  其中，`T` 是叶子节点的数量，`w_j` 是第 j 个叶子节点的权重，`γ`、`λ` 和 `α` 分别是复杂度惩罚系数、L2正则化系数和L1正则化系数。
+  其中，$T$ 是叶子节点的数量，$w_j$ 是第 $j$ 个叶子节点的权重，$\gamma$、$\lambda$ 和 $\alpha$ 分别是复杂度惩罚系数、L2正则化系数和L1正则化系数。
 
 - **二阶泰勒展开**：XGBoost使用二阶泰勒展开来近似目标函数，从而加速优化过程：
   
-  ```math
-  L^(t) ≈ Σ(i=1 to n) [l(y_i, ŷ_i^(t-1)) + g_i f_t(x_i) + (1/2)h_i f_t²(x_i)] + Ω(f_t)
-  ```
+  $$
+  \mathcal{L}^{(t)} \approx \sum_{i=1}^n [l(y_i, \hat{y}_i^{(t-1)}) + g_i f_t(x_i) + \frac{1}{2} h_i f_t^2(x_i)] + \Omega(f_t)
+  $$
   
-  其中，`g_i = ∂/∂ŷ_i^(t-1) l(y_i, ŷ_i^(t-1))` 是一阶导数（梯度），`h_i = ∂²/∂ŷ_i^(t-1)² l(y_i, ŷ_i^(t-1))` 是二阶导数（Hessian）。
+  其中，$g_i = \partial_{\hat{y}_i^{(t-1)}} l(y_i, \hat{y}_i^{(t-1)})$ 是一阶导数（梯度），$h_i = \partial_{\hat{y}_i^{(t-1)}}^2 l(y_i, \hat{y}_i^{(t-1)})$ 是二阶导数（Hessian）。
 
 - **分裂增益**：XGBoost在选择分裂点时，使用以下公式计算增益：
   
-  ```math
-  Gain = (1/2) * [(G_L²)/(H_L + λ) + (G_R²)/(H_R + λ) - (G_L + G_R)²/(H_L + H_R + λ)] - γ
-  ```
+  $$
+  \text{Gain} = \frac{1}{2} \left[ \frac{G_L^2}{H_L + \lambda} + \frac{G_R^2}{H_R + \lambda} - \frac{(G_L + G_R)^2}{H_L + H_R + \lambda} \right] - \gamma
+  $$
   
-  其中，`G_L` 和 `G_R` 分别是左右子节点的梯度和，`H_L` 和 `H_R` 分别是左右子节点的Hessian和。
+  其中，$G_L$ 和 $G_R$ 分别是左右子节点的梯度和，$H_L$ 和 $H_R$ 分别是左右子节点的Hessian和。
 
 - **缺失值处理**：XGBoost能够自动处理缺失值，通过学习缺失值应该被分到左子树还是右子树来最大化增益。对于每个分裂点，XGBoost会尝试将缺失值分到左子树和右子树，然后选择增益最大的方向。
 
@@ -178,38 +178,41 @@ XGBoost（eXtreme Gradient Boosting）是一个高效且灵活的梯度提升框
 
 - **线性SVM**：对于线性可分的数据，SVM通过以下优化问题来找到超平面：
   
-  ```math
-  min(w,b) (1/2) ||w||²
-  subject to y_i(w^T x_i + b) ≥ 1, ∀i
-  ```
-  
-  其中，`w` 是超平面的法向量，`b` 是偏置项。
+  $$
+  \min_{w,b} \frac{1}{2} \|w\|^2
+  $$
+  $$
+  \text{subject to } y_i(w^T x_i + b) \geq 1, \forall i
+  $$
+  其中，$w$是超平面的法向量，$b$是偏置项。
 
-- **软间隔SVM**：对于线性不可分的数据，SVM引入松弛变量 ξ_i 来允许一些误分类：
+- **软间隔SVM**：对于线性不可分的数据，SVM引入松弛变量 $\xi_i$ 来允许一些误分类：
   
-  ```math
-  min(w,b,ξ) (1/2) ||w||² + C Σ ξ_i
-  subject to y_i(w^T x_i + b) ≥ 1 - ξ_i, ξ_i ≥ 0, ∀i
-  ```
-  
-  其中，`C` 是惩罚系数，控制误分类的惩罚程度。
+  $$
+  \min_{w,b,\xi} \frac{1}{2} \|w\|^2 + C \sum \xi_i
+  $$
+  $$
+  \text{subject to } y_i(w^T x_i + b) \geq 1 - \xi_i, \xi_i \geq 0, \forall i
+  $$
+  其中，$C$ 是惩罚系数，控制误分类的惩罚程度。
 
 - **核方法**：SVM通过核函数将数据映射到高维空间，以处理非线性可分的数据。常用的核函数包括：
-  - **线性核**：K(x_i, x_j) = x_i^T x_j
-  - **多项式核**：K(x_i, x_j) = (γ x_i^T x_j + r)^d
-  - **RBF核（径向基核）**：K(x_i, x_j) = exp(-γ ||x_i - x_j||²)
-  - **Sigmoid核**：K(x_i, x_j) = tanh(γ x_i^T x_j + r)
+  - **线性核**：$K(x_i, x_j) = x_i^T x_j$
+  - **多项式核**：$K(x_i, x_j) = (\gamma x_i^T x_j + r)^d$
+  - **RBF核（径向基核）**：$K(x_i, x_j) = \exp(-\gamma \|x_i - x_j\|^2)$
+  - **Sigmoid核**：$K(x_i, x_j) = \tanh(\gamma x_i^T x_j + r)$
 
 - **对偶问题**：通过拉格朗日乘数法，SVM的优化问题可以转化为对偶问题：
   
-  ```math
-  max(α) Σ α_i - (1/2) Σ Σ α_i α_j y_i y_j K(x_i, x_j)
-  subject to Σ α_i y_i = 0, 0 ≤ α_i ≤ C, ∀i
-  ```
-  
-  其中，`α_i` 是拉格朗日乘子。
+  $$
+  \max_{\alpha} \sum \alpha_i - \frac{1}{2} \sum \sum \alpha_i \alpha_j y_i y_j K(x_i, x_j)
+  $$
+  $$
+  \text{subject to } \sum \alpha_i y_i = 0, 0 \leq \alpha_i \leq C, \forall i
+  $$
+  其中，$\alpha_i$是拉格朗日乘子。
 
-- **支持向量**：在对偶问题的解中，`α_i > 0` 的样本称为支持向量，这些样本对超平面的确定起关键作用。
+- **支持向量**：在对偶问题的解中，$\alpha_i > 0$的样本称为支持向量，这些样本对超平面的确定起关键作用。
 
 ## 交流群
 
