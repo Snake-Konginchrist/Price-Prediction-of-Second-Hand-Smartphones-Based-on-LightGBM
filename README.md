@@ -1,10 +1,12 @@
 # 二手手机价格预测系统
 
 ## 项目概述
+
 本系统基于机器学习算法，通过对二手手机历史价格数据进行建模分析，实现手机价格的智能预测。包含数据预处理、特征工程、模型训练与调优、结果可视化等完整机器学习流程。
 
 ## 项目结构
-```
+
+```bash
 .
 ├── data/                # 原始数据及编码数据
 ├── figure/              # 数据可视化脚本
@@ -20,54 +22,67 @@
 ```
 
 ## 环境要求
-- Python 3.8+
+
+- Python 3.13
 - 主要依赖库：
-  ```
+
+  ```txt
   lightgbm==4.6.0
   scikit-learn==1.6.1
-  pandas==2.2.3
-  numpy==1.24.3
-  matplotlib==3.10.0
-  xgboost==2.1.4
-  scikit-learn==1.6.1
+  pandas==2.3.1
+  numpy==2.3.1
+  matplotlib==3.10.3
+  xgboost==3.0.2
   ```
 
 ## 快速开始
-1. 安装依赖
-```bash
-pip install -r requirements.txt
-```
 
-2. 运行模型训练
-```bash
-# LightGBM模型
-python lightgbm-plus.py
+1. 使用 uv 安装依赖（推荐，自动读取 pyproject.toml）
 
-# SVM模型
-python svm-grid.py
-```
+   ```bash
+   uv sync
+   ```
 
-3. 使用训练好的模型预测
-```bash
-python predict.py
-```
+2. 或者使用 pip 安装依赖
+
+   ```bash
+   pip install -r requirements.txt
+   ```
+
+3. 运行模型训练
+
+   ```bash
+   # LightGBM模型
+   python lightgbm-plus.py
+
+   # SVM模型
+   python svm-grid.py
+   ```
+
+4. 使用训练好的模型预测
+
+   ```bash
+   python predict.py
+   ```
 
 ## 结果输出
+
 - 模型文件：`model/*.pkl`
 - 误差分析：`二手手机价格预测 百分比误差.txt`
 - 训练曲线：`* Accuracy Change Curve.png`
 
 ## 性能指标
+
 | 模型        | 平均绝对误差 | 均方根误差 | 误差百分比 |
 |-----------|--------|--------|-------|
 | LightGBM  | 152.3  | 198.6  | 12.3% |
 | SVM       | 178.9  | 234.1  | 15.6% |
 | XGBoost     | 165.8  | 208.4  | 13.1% |
 
-
 ## 算法原理
 
 ### LightGBM
+
 LightGBM（Light Gradient Boosting Machine）是一种基于决策树的梯度提升框架，专为分布式和高效处理大数据集而设计。以下是LightGBM的一些关键特性：
 
 - **梯度提升框架**：LightGBM基于梯度提升决策树（GBDT）算法，其目标函数可以表示为：
@@ -90,6 +105,7 @@ LightGBM（Light Gradient Boosting Machine）是一种基于决策树的梯度�
   其中，$x_{ki}$ 表示第 $k$ 个样本的第 $i$ 个特征值。
 
 ### XGBoost
+
 XGBoost（eXtreme Gradient Boosting）是一个高效且灵活的梯度提升框架，广泛应用于机器学习竞赛和实际应用中。以下是XGBoost的一些关键特性：
 
 - **Boosting算法**：XGBoost使用梯度提升算法，通过逐步构建一系列弱学习器（通常是决策树）来提高模型的预测性能。每个新树的构建是为了纠正之前所有树的错误。XGBoost通过加权的方式来组合多个弱学习器的预测结果，从而提高整体模型的准确性。模型的预测值可以表示为：
@@ -115,6 +131,7 @@ XGBoost（eXtreme Gradient Boosting）是一个高效且灵活的梯度提升框
 - **缺失值处理**：XGBoost能够自动处理缺失值，通过学习缺失值应该被分到左子树还是右子树来最大化增益。对于每个分裂点，XGBoost会尝试将缺失值分到左子树和右子树，然后选择增益最大的方向。
 
 ### SVM
+
 支持向量机（Support Vector Machine, SVM）是一种用于分类和回归的监督学习模型，特别适用于高维数据。以下是SVM的一些关键特性：
 
 - **基本原理**：SVM的目标是找到一个最佳的超平面，将不同类别的样本分开。对于线性可分的数据，SVM通过最大化边界（即支持向量到超平面的距离）来找到这个超平面。
@@ -143,9 +160,11 @@ XGBoost（eXtreme Gradient Boosting）是一个高效且灵活的梯度提升框
 - **支持向量**：在对偶问题的解中，$\alpha_i > 0$的样本称为支持向量，这些样本对超平面的确定起关键作用。
 
 ## 交流群
-欢迎加入我们的开源交流QQ群：1022820973，与更多开发者交流学习！
+
+欢迎加入我们的开源交流QQ群：1022820973，一起交流学习！
 
 ## 许可证
+
 [MIT License](LICENSE)
 
 ## Star History

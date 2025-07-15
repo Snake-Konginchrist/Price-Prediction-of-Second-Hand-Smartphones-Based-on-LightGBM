@@ -1,0 +1,25 @@
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"
+
+[project]
+name = "phone-price-prediction"
+version = "0.1.0"
+description = "基于 LightGBM 的二手智能手机价格预测系统"
+requires-python = ">=3.13"
+dependencies = [
+    "lightgbm",
+    "scikit-learn",
+    "pandas",
+    "numpy",
+    "matplotlib",
+    "xgboost",
+    "openpyxl",
+]
+
+[[tool.uv.index]]
+name = "pypi"
+url = "https://pypi.tuna.tsinghua.edu.cn/simple/"
+
+[tool.hatch.build.targets.wheel]
+packages = ["preprocess", "model"]
